@@ -1,0 +1,8 @@
+Know what storage means (HDD vs SSD, RAID basics)
+
+Compute = processing power (CPU, RAM basics)
+
+Networking = IP, DNS, routers/switches/firewalls
+
+Cloud = IaaS, SaaS, PaaS; AWS/Azure; public vs private vs hybrid
+
