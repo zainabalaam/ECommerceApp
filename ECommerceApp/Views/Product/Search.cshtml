@@ -1,0 +1,139 @@
+﻿@model IPagedList<ECommerceApp.DTOs.ProductDto>
+
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<!-- Search Form -->
+<div class="search-controls">
+    <h2>Search Results for '@ViewBag.Query'</h2>
+    <form method="get" action="@Url.Action("Search")">
+        <input type="text" name="query" value="@ViewBag.Query" placeholder="Search products..." class="form-control" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<!-- Sorting Links -->
+<div class="sorting-controls">
+    <div>
+        Sort by:
+        <a href="?query=@ViewBag.Query&sortBy=name" @(ViewBag.SortBy == "name" ? "class=active" : "")>Name</a> |
+        <a href="?query=@ViewBag.Query&sortBy=price" @(ViewBag.SortBy == "price" ? "class=active" : "")>Price (Low to High)</a> |
+        <a href="?query=@ViewBag.Query&sortBy=price_desc" @(ViewBag.SortBy == "price_desc" ? "class=active" : "")>Price (High to Low)</a>
+    </div>
+</div>
+
+<!-- Product List -->
+<div class="product-list">
+    @if (Model.Any())
+    {
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 product-item">
+                    <div class="card mb-3">
+                        <img src="@product.ImageUrl" alt="@product.Name" class="card-img-top" onerror="this.src='/images/default-product.jpg'" />
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">@product.Description</p>
+                            <p class="card-text">Price: $@product.Price</p>
+                            <p class="card-text">Stock: @product.Stock</p>
+                            <p class="card-text">Category ID: @product.CategoryId</p>
+                            <a href="@Url.Action("Details", "Product", new { id = product.ProductId })" class="btn btn-primary">View Details</a>
+                            <a href="#" class="btn btn-secondary">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>@ViewBag.NoResults</p>
+    }
+</div>
+
+<!-- Pagination Controls -->
+<div class="pagination-controls">
+    @Html.PagedListPager(Model, page => Url.Action("Search", new { query = ViewBag.Query, page, sortBy = ViewBag.SortBy }), new PagedListRenderOptions
+{
+    Display = PagedListDisplayMode.IfNeeded,
+    DisplayPageCountAndCurrentLocation = true,
+    MaximumPageNumbersToDisplay = 5
+})
+</div>
+
+<!-- Optional CSS for Basic Styling (if not using Bootstrap) -->
+<style>
+    .search-controls, .sorting-controls {
+        margin-top: 20px;
+    }
+
+    .product-list {
+        margin-top: 20px;
+    }
+
+    .product-item {
+        margin-bottom: 20px;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .card-img-top {
+        max-height: 300px;
+        object-fit: cover;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        margin-bottom: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+        margin-right: 5px;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .sorting-controls a.active {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .pagination-controls {
+        margin-top: 20px;
+    }
+
+    .form-control {
+        display: inline-block;
+        width: 300px;
+        margin-right: 10px;
+    }
+</style>

@@ -1,0 +1,35 @@
+﻿@model ECommerceApp.DTOs.ProductDto
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="product-details">
+    <div class="card">
+        <img src="/@Model.ImageUrl" alt="@Model.Name" class="card-img-top" onerror="this.src='/images/default-product.jpg'" />
+        <div class="card-body">
+            <h2 class="card-title">@Model.Name</h2>
+            <p class="card-text">@Model.Description</p>
+            <p class="card-text">Price: $@Model.Price</p>
+            <p class="card-text">Stock: @Model.Stock</p>
+            <p class="card-text">Category ID: @Model.CategoryId</p>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+        </div>
+    </div>
+</div>
+
+<!-- Optional CSS (if not using Bootstrap) -->
+<style>
+    .product-details .card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        max-width: 500px;
+        margin: 20px auto;
+    }
+
+    .card-img-top {
+        max-height: 300px;
+        object-fit: cover;
+    }
+</style>
